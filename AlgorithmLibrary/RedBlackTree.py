@@ -220,7 +220,7 @@ class RedBlackTree(Generic[T]):
         if node != self.__NIL:
             print(indent, end=' ')
             if last:
-                print("├─(R)────", end=' ')
+                print("└─(R)────", end=' ')
                 indent += "     "
             else:
                 print("├─(L)────", end=' ')
@@ -301,8 +301,11 @@ if __name__ == "__main__":
     bst = RedBlackTree[int]()
     bst.insert(10)
     bst.insert(20)
+    bst.insert(25)
     bst.insert(30)
+    bst.insert(7)
     bst.insert(5)
     bst.insert(4)
-    bst.insert(2)
+    bst.insert(3)
+    bst.insert(1)
     bst.print()
