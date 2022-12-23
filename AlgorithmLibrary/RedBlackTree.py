@@ -3,8 +3,8 @@ from typing import TypeVar
 
 
 class Color(Enum):
-    RED = True
-    BLACK = False
+    RED = 1
+    BLACK = 0
 
 
 K = TypeVar("K")
@@ -19,19 +19,19 @@ class Node:
         self.__parent: Node | None = None
 
     @property
-    def color(self):
+    def color(self) -> Color:
         return self.__key
 
     @color.setter
-    def color(self, color: Color):
+    def color(self, color: Color) -> None:
         self.__color = color
 
     @property
-    def key(self):
+    def key(self) -> K:
         return self.__key
 
     @key.setter
-    def key(self, value: K):
+    def key(self, value: K) -> None:
         self.__key = value
 
     @property
@@ -63,7 +63,7 @@ class RedBlackTree:
     def __init__(self) -> None:
         self.__root: Node | None = None
 
-    def insert(self, value: K):
+    def insert(self, value: K) -> None:
         node = Node(value)
 
         y = None
@@ -71,7 +71,7 @@ class RedBlackTree:
 
         while x is not None:
             y = x
-            if node.key < node.key:
+            if node.key < x.key:
                 x = x.left_child
             else:
                 x = x.right_child
