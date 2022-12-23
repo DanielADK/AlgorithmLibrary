@@ -93,6 +93,7 @@ class RedBlackTree(Generic[T]):
     maximum()
         Return maximum value in the tree
     """
+
     def __init__(self) -> None:
         """
         It initializes the tree.
@@ -165,6 +166,16 @@ class RedBlackTree(Generic[T]):
         """
         self.__remove_from_tree(self.__root, value)
 
+    def contains(self, key: T) -> bool:
+        """
+        If the key is in the tree, return True, otherwise return False
+
+        :param key: The key to search for
+        :type key: T
+        :return: The value of the key.
+        """
+        return self.__find_value(self.__root, key) is not self.__NIL
+
     def minimum(self, node: Node) -> Node:
         """
         It returns the minimum value in the tree.
@@ -188,6 +199,23 @@ class RedBlackTree(Generic[T]):
         while node.right_node != self.__NIL:
             node = node.right_node
         return node
+
+    def __find_value(self, node: Node, key: T) -> Node:
+        """
+        If the key is not found, return the node that would be the parent of the key if it were inserted into the tree
+
+        :param node: The node to start searching from
+        :type node: Node
+        :param key: The key to search for
+        :type key: T
+        :return: The node that contains the key.
+        """
+        if node is self.__NIL or key is node.key:
+            return node
+
+        if key < node.key:
+            return self.__find_value(node.left_child, key)
+        return self.__find_value(node.right_child, key)
 
     def __remove_from_tree(self, node: Node, key: T) -> None:
         """
