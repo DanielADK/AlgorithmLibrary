@@ -61,15 +61,21 @@ class Node(Generic[T]):
 
 class RedBlackTree(Generic[T]):
     def __init__(self) -> None:
-        self.__root: Node[T] | None = None
+        self.__NIL = Node(0)
+        self.__NIL.color = Color.BLACK
+        self.__NIL.left_child = None
+        self.__NIL.right_child = None
+        self.__root: Node[T] = self.__NIL
 
     def insert(self, value: T) -> None:
         node = Node(value)
+        node.left_child = self.__NIL
+        node.right_child = self.__NIL
 
         y = None
         x = self.__root
 
-        while x is not None:
+        while x != self.__NIL:
             y = x
             if node.key < x.key:
                 x = x.left_child
@@ -130,7 +136,7 @@ class RedBlackTree(Generic[T]):
     def __left_rotation(self, x: Node) -> None:
         y = x.right_child
         x.right_child = y.left_child
-        if y.left_child is not None:
+        if y.left_child is not self.__NIL:
             y.left_child.parent = x
 
         y.parent = x.parent
@@ -146,7 +152,7 @@ class RedBlackTree(Generic[T]):
     def __right_rotation(self, x: Node) -> None:
         y = x.left_child
         x.left_child = y.right_child
-        if y.right_child is not None:
+        if y.right_child is not self.__NIL:
             y.right_child.parent = x
 
         y.parent = x.parent
