@@ -68,6 +68,31 @@ class Node(Generic[T]):
 
 
 class RedBlackTree(Generic[T]):
+    """
+    A class that represent type of binary search tree - Red-black tree
+
+    ...
+
+    Attributes
+    ----------
+    __NIL : Node
+        Node which represents NULL node
+    __root : Node[T]
+        Root of the tree
+
+    Methods
+    -------
+    insert(value: T)
+        Inserts value of datatype T into the tree
+    remove(value: T)
+        Removes value of datatype T from the tree
+    search(value: T)
+        Search for value of datatype T in the tree
+    minimum()
+        Returns minimum value in the tree
+    maximum()
+        Return maximum value in the tree
+    """
     def __init__(self) -> None:
         """
         It initializes the tree.
