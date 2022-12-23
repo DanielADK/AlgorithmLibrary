@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TypeVar
+from typing import TypeVar, Generic
 
 
 class Color(Enum):
@@ -7,13 +7,13 @@ class Color(Enum):
     BLACK = 0
 
 
-K = TypeVar("K")
+T = TypeVar('T')
 
 
-class Node:
-    def __init__(self, value: K) -> None:
+class Node(Generic[T]):
+    def __init__(self, value: T) -> None:
         self.__color: Color = Color.RED
-        self.__key: K = value
+        self.__key: T = value
         self.__left_child: Node | None = None
         self.__right_child: Node | None = None
         self.__parent: Node | None = None
@@ -27,11 +27,11 @@ class Node:
         self.__color = color
 
     @property
-    def key(self) -> K:
+    def key(self) -> T:
         return self.__key
 
     @key.setter
-    def key(self, value: K) -> None:
+    def key(self, value: T) -> None:
         self.__key = value
 
     @property
@@ -59,11 +59,11 @@ class Node:
         self.__parent = child
 
 
-class RedBlackTree:
+class RedBlackTree(Generic[T]):
     def __init__(self) -> None:
-        self.__root: Node | None = None
+        self.__root: Node[T] | None = None
 
-    def insert(self, value: K) -> None:
+    def insert(self, value: T) -> None:
         node = Node(value)
 
         y = None
