@@ -35,7 +35,6 @@ class Node(Generic[T]):
     __parent : Node | None
         parent of the node
     """
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, value: T) -> None:
         self.__color: Color = Color.RED
         self.__key: T = value
