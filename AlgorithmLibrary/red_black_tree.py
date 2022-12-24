@@ -237,7 +237,7 @@ class RedBlackTree(Generic[T]):
             node = node.right_node
         return node
 
-    def to_string(self) -> list[T]:
+    def to_list(self) -> list[T]:
         content = list()
         content = self.__in_order(self.__root, content)
         return content
