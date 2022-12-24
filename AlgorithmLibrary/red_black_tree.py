@@ -1,5 +1,6 @@
+import typing
 from enum import Enum
-from typing import TypeVar, Generic
+from typing import TypeVar, Type, Generic
 
 
 class Color(Enum):
@@ -143,6 +144,13 @@ class RedBlackTree(Generic[T]):
         :type value: T
         :return: The node that is being returned is the node that is being inserted.
         """
+
+        if self.__orig_class__.__args__[0].__name__ is not type(value).__name__:
+            raise TypeError("Invalid datatype. Expected: " +
+                            self.__orig_class__.__args__[0].__name__ +
+                            ", but got: " +
+                            type(value).__name__)
+
         node = Node(value)
         node.parent = None
         node.left_child = self.__nil
@@ -183,17 +191,27 @@ class RedBlackTree(Generic[T]):
         :param value: The value to remove from the tree
         :type value: T
         """
+        if self.__orig_class__.__args__[0].__name__ is not type(value).__name__:
+            raise TypeError("Invalid datatype. Expected: " +
+                            self.__orig_class__.__args__[0].__name__ +
+                            ", but got: " +
+                            type(value).__name__)
         self.__remove_from_tree(self.__root, value)
 
-    def contains(self, key: T) -> bool:
+    def contains(self, value: T) -> bool:
         """
         If the key is in the tree, return True, otherwise return False
 
-        :param key: The key to search for
-        :type key: T
+        :param value: The key to search for
+        :type value: T
         :return: The value of the key.
         """
-        return self.__find_value(self.__root, key) is not self.__nil
+        if self.__orig_class__.__args__[0].__name__ is not type(value).__name__:
+            raise TypeError("Invalid datatype. Expected: "+
+                            self.__orig_class__.__args__[0].__name__+
+                            ", but got: "+
+                            type(value).__name__)
+        return self.__find_value(self.__root, value) is not self.__nil
 
     def minimum(self, node: Node) -> Node:
         """
