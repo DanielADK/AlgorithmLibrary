@@ -9,7 +9,7 @@ class TestRedBlackTree(TestCase):
         test_list: list[int] = []
         rbt = RedBlackTree[int]()
 
-        count: int = 2_000
+        count: int = 20_000
         test_list = random.sample(range(-count, count), count)
 
         for num in test_list:
@@ -21,8 +21,8 @@ class TestRedBlackTree(TestCase):
         rbt = RedBlackTree[str]()
 
         # Generate random strings
-        letters: str = string.ascii_letters + string.digits + string.punctuation
-        for _ in range(2_000):
+        letters: str = string.ascii_letters+string.digits+string.punctuation
+        for _ in range(20_000):
             length = random.randint(5, 200)
             result: str = ''.join(random.choice(letters) for _ in range(length))
             test_list.append(result)
@@ -53,3 +53,29 @@ class TestRedBlackTree(TestCase):
             rbt.insert(True)
         rbt.insert("apple")
         self.assertTrue(rbt.contains("apple"))
+
+    def test_to_list(self):
+        test_int_list: list[int] = []
+        rbt = RedBlackTree[int]()
+
+        count: int = 20_000
+        test_int_list = random.sample(range(-count, count), count)
+
+        for i in test_int_list:
+            rbt.insert(i)
+
+        self.assertEqual(rbt.to_list(), sorted(test_int_list))
+
+        test_str_list: list[str] = []
+        rbts = RedBlackTree[str]()
+        letters: str = string.ascii_letters+string.digits+string.punctuation
+        for _ in range(2_000):
+            length = random.randint(5, 200)
+            result: str = ''.join(random.choice(letters) for _ in range(length))
+            test_str_list.append(result)
+            rbts.insert(result)
+
+        self.assertEqual(rbts.to_list(), sorted(test_str_list))
+
+
+
