@@ -16,9 +16,9 @@ class TestRedBlackTree(TestCase):
             rbt.insert(num)
             self.assertTrue(rbt.contains(num))
 
-    def test_string_insert(self):
+    def test_str_insert(self):
         test_list: list[str] = []
-        rbt = RedBlackTree[string]()
+        rbt = RedBlackTree[str]()
 
         # Generate random strings
         letters: str = string.ascii_letters + string.digits + string.punctuation
