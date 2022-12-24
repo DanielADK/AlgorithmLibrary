@@ -18,9 +18,9 @@ T = TypeVar('T')
 
 def typeCheck(gen_class, value):
     if gen_class.__name__ != type(value).__name__:
-        raise TypeError("Invalid datatype. Expected: " +
-                        gen_class.__name__ +
-                        ", but got: " +
+        raise TypeError("Invalid datatype. Expected: "+
+                        gen_class.__name__+
+                        ", but got: "+
                         type(value).__name__)
 
 
@@ -44,6 +44,7 @@ class Node(Generic[T]):
     __parent : Node | None
         parent of the node
     """
+
     def __init__(self, value: T) -> None:
         self.__color: Color = Color.RED
         self.__key: T = value
@@ -236,6 +237,18 @@ class RedBlackTree(Generic[T]):
             node = node.right_node
         return node
 
+    def to_string(self) -> list[T]:
+        content = list()
+        content = self.__in_order(self.__root, content)
+        return content
+
+    def __in_order(self, node: Node, content: list[T]) -> list[T]:
+        if node != self.__nil:
+            self.__in_order(node.left_child, content)
+            content.append(node.key)
+            self.__in_order(node.right_child, content)
+        return content
+
     def __find_value(self, node: Node, key: T) -> Node:
         """
         If the key is not found, return the node that would be the parent
@@ -409,7 +422,7 @@ class RedBlackTree(Generic[T]):
                 print("├─(L)────", end=' ')
                 indent += " │ "
 
-            print(str(node.key) + " (" + ("RED" if node.color == Color.RED else "BLACK") + ")")
+            print(str(node.key)+" ("+("RED" if node.color == Color.RED else "BLACK")+")")
             self.__print_tree(node.left_child, indent, False)
             self.__print_tree(node.right_child, indent, True)
 
