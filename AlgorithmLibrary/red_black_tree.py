@@ -16,6 +16,14 @@ class Color(Enum):
 T = TypeVar('T')
 
 
+def typeCheck(gen_class, value):
+    if gen_class.__name__ != type(value).__name__:
+        raise TypeError("Invalid datatype. Expected: " +
+                        gen_class.__name__ +
+                        ", but got: " +
+                        type(value).__name__)
+
+
 # > A node in a binary tree that can hold any type of data
 class Node(Generic[T]):
     """
@@ -145,11 +153,7 @@ class RedBlackTree(Generic[T]):
         :return: The node that is being returned is the node that is being inserted.
         """
 
-        if self.__orig_class__.__args__[0].__name__ is not type(value).__name__:
-            raise TypeError("Invalid datatype. Expected: " +
-                            self.__orig_class__.__args__[0].__name__ +
-                            ", but got: " +
-                            type(value).__name__)
+        typeCheck(self.__orig_class__.__args__[0], value)
 
         node = Node(value)
         node.parent = None
@@ -191,11 +195,8 @@ class RedBlackTree(Generic[T]):
         :param value: The value to remove from the tree
         :type value: T
         """
-        if self.__orig_class__.__args__[0].__name__ is not type(value).__name__:
-            raise TypeError("Invalid datatype. Expected: " +
-                            self.__orig_class__.__args__[0].__name__ +
-                            ", but got: " +
-                            type(value).__name__)
+        typeCheck(self.__orig_class__.__args__[0], value)
+
         self.__remove_from_tree(self.__root, value)
 
     def contains(self, value: T) -> bool:
@@ -206,11 +207,9 @@ class RedBlackTree(Generic[T]):
         :type value: T
         :return: The value of the key.
         """
-        if self.__orig_class__.__args__[0].__name__ is not type(value).__name__:
-            raise TypeError("Invalid datatype. Expected: "+
-                            self.__orig_class__.__args__[0].__name__+
-                            ", but got: "+
-                            type(value).__name__)
+
+        typeCheck(self.__orig_class__.__args__[0], value)
+
         return self.__find_value(self.__root, value) is not self.__nil
 
     def minimum(self, node: Node) -> Node:
