@@ -130,12 +130,12 @@ class RedBlackTree(Generic[T]):
         We then set the parent of the new node to None, and the left and right children
         to the NIL node. We also set the color of the new node to red.
 
-        Next, we set the y_node variable to None and the x_node variable to the root of the tree.
+        Next, we set the y variable to None and the x variable to the root of the tree.
         We then enter a while loop that will continue until we reach the NIL node.
 
-        Inside the while loop, we set y_node to x_node and then check if the key of
-        the new node is less than the key of the current node. If it is, we set x_node
-        to the left child of the current node. Otherwise, we set x_node to the
+        Inside the while loop, we set y to x and then check if the key of
+        the new node is less than the key of the current node. If it is, we set x
+        to the left child of the current node. Otherwise, we set x to the
         right child of the current node.
 
         Once we reach the NIL node, we set the parent
@@ -150,23 +150,23 @@ class RedBlackTree(Generic[T]):
         node.right_child = self.__nil
         node.color = Color.RED
 
-        y_node = None
-        x_node = self.__root
+        y = None
+        x = self.__root
 
-        while x_node != self.__nil:
-            y_node = x_node
-            if node.key < x_node.key:
-                x_node = x_node.left_child
+        while x != self.__nil:
+            y = x
+            if node.key < x.key:
+                x = x.left_child
             else:
-                x_node = x_node.right_child
+                x = x.right_child
 
-        node.parent = y_node
-        if y_node is None:
+        node.parent = y
+        if y is None:
             self.__root = node
-        elif node.key < y_node.key:
-            y_node.left_child = node
+        elif node.key < y.key:
+            y.left_child = node
         else:
-            y_node.right_child = node
+            y.right_child = node
 
         if node.parent is None:
             node.color = Color.BLACK
@@ -249,120 +249,120 @@ class RedBlackTree(Generic[T]):
         :type key: T
         :return: The node with the minimum key in the tree.
         """
-        z_node = self.__nil
+        z = self.__nil
         while node is not self.__nil:
             if node.key is key:
-                z_node = node
+                z = node
 
             if node.key <= key:
                 node = node.right_child
             else:
                 node = node.left_child
 
-        if z_node is self.__nil:
+        if z is self.__nil:
             # Value is not in the tree
             return
 
-        y_node = z_node
-        y_color = y_node.color
-        if z_node.left_child is self.__nil:
-            x_node = z_node.right_child
-            self.__rb_transplant(z_node, z_node.right_child)
-        elif z_node.right_child is self.__nil:
-            x_node = z_node.left_child
-            self.__rb_transplant(z_node, z_node.left_child)
+        y = z
+        y_color = y.color
+        if z.left_child is self.__nil:
+            x = z.right_child
+            self.__rb_transplant(z, z.right_child)
+        elif z.right_child is self.__nil:
+            x = z.left_child
+            self.__rb_transplant(z, z.left_child)
         else:
-            y_node = self.minimum(z_node.right_child)
-            y_color = y_node.color
-            x_node = y_node.right_child
-            if y_node.parent is z_node:
-                x_node.parent = y_node
+            y = self.minimum(z.right_child)
+            y_color = y.color
+            x = y.right_child
+            if y.parent is z:
+                x.parent = y
             else:
-                self.__rb_transplant(y_node, y_node.right_child)
-                y_node.right_child = z_node.right_child
-                y_node.right_child.parent = y_node
+                self.__rb_transplant(y, y.right_child)
+                y.right_child = z.right_child
+                y.right_child.parent = y
 
-            self.__rb_transplant(z_node, y_node)
-            y_node.left_child = z_node.left_child
-            y_node.left_child.parent = y_node
-            y_node.color = z_node.color
+            self.__rb_transplant(z, y)
+            y.left_child = z.left_child
+            y.left_child.parent = y
+            y.color = z.color
         if y_color is Color.BLACK:
-            self.__remove_balance(x_node)
+            self.__remove_balance(x)
 
-    def __remove_balance(self, x_node: Node) -> None:
+    def __remove_balance(self, x: Node) -> None:
         """
         If the node to be removed is black, then we need to rebalance the tree
 
-        :param x_node: The node to be removed
-        :type x_node: Node
+        :param x: The node to be removed
+        :type x: Node
         """
-        while x_node is not self.__root and x_node.color is Color.BLACK:
-            if x_node is x_node.parent.left_child:
-                s_node = x_node.parent.right_child
+        while x is not self.__root and x.color is Color.BLACK:
+            if x is x.parent.left_child:
+                s_node = x.parent.right_child
                 if s_node.color is Color.RED:
                     s_node.color = Color.BLACK
-                    x_node.parent.color = Color.RED
-                    self.__left_rotation(x_node.parent)
-                    s_node = x_node.parent.right_child
+                    x.parent.color = Color.RED
+                    self.__left_rotation(x.parent)
+                    s_node = x.parent.right_child
 
                 if s_node.left_child.color is Color.BLACK \
                         and s_node.right_child.color is Color.BLACK:
                     s_node.color = Color.RED
-                    x_node = x_node.parent
+                    x = x.parent
                 else:
                     if s_node.right_child.color is Color.BLACK:
                         s_node.left_child.color = Color.BLACK
                         s_node.color = Color.RED
                         self.__right_rotation(s_node)
-                        s_node = x_node.parent.right_child
+                        s_node = x.parent.right_child
 
-                    s_node.color = x_node.parent.color
-                    x_node.parent.color = Color.BLACK
+                    s_node.color = x.parent.color
+                    x.parent.color = Color.BLACK
                     s_node.right_child.color = Color.BLACK
-                    self.__left_rotation(x_node.parent)
-                    x_node = self.__root
+                    self.__left_rotation(x.parent)
+                    x = self.__root
             else:
-                s_node = x_node.parent.left_child
+                s_node = x.parent.left_child
                 if s_node.color is Color.RED:
                     s_node.color = Color.BLACK
-                    x_node.parent.color = Color.RED
-                    self.__right_rotation(x_node.parent)
-                    s_node = x_node.parent.left_child
+                    x.parent.color = Color.RED
+                    self.__right_rotation(x.parent)
+                    s_node = x.parent.left_child
 
                 if s_node.right_child.color is Color.BLACK \
                         and s_node.right_child.color is Color.BLACK:
                     s_node.color = Color.RED
-                    x_node = x_node.parent
+                    x = x.parent
                 else:
                     if s_node.left_child.color is Color.BLACK:
                         s_node.right_child.color = Color.BLACK
                         s_node.color = Color.RED
                         self.__left_rotation(s_node)
-                        s_node = x_node.parent.left_child
-                    s_node.color = x_node.parent.color
-                    x_node.parent.color = Color.BLACK
+                        s_node = x.parent.left_child
+                    s_node.color = x.parent.color
+                    x.parent.color = Color.BLACK
                     s_node.left_child.color = Color.BLACK
-                    self.__right_rotation(x_node.parent)
-                    x_node = self.__root
-        x_node.color = Color.BLACK
+                    self.__right_rotation(x.parent)
+                    x = self.__root
+        x.color = Color.BLACK
 
-    def __rb_transplant(self, x_node: Node, y_node: Node) -> None:
+    def __rb_transplant(self, x: Node, y: Node) -> None:
         """
         If the node to be replaced is the root, then the replacement node becomes the root.
         Otherwise, the replacement node takes the place of the node to be replaced
 
-        :param x_node: The node to be removed
-        :type x_node: Node
-        :param y_node: the node that will replace x
-        :type y_node: Node
+        :param x: The node to be removed
+        :type x: Node
+        :param y: the node that will replace x
+        :type y: Node
         """
-        if x_node.parent is None:
-            self.__root = y_node
-        elif x_node is x_node.parent.left_child:
-            x_node.parent.left_child = y_node
+        if x.parent is None:
+            self.__root = y
+        elif x is x.parent.left_child:
+            x.parent.left_child = y
         else:
-            x_node.parent.right_child = y_node
-        y_node.parent = x_node.parent
+            x.parent.right_child = y
+        y.parent = x.parent
 
     def print(self):
         """
@@ -397,47 +397,47 @@ class RedBlackTree(Generic[T]):
             self.__print_tree(node.left_child, indent, False)
             self.__print_tree(node.right_child, indent, True)
 
-    def __insert_balance(self, x_node: Node) -> None:
+    def __insert_balance(self, x: Node) -> None:
         """
         It inserts a node into the tree and then balances the tree
 
-        :param x_node: Node
-        :type x_node: Node
+        :param x: Node
+        :type x: Node
         """
-        while x_node.parent.color is Color.RED:
-            if x_node.parent is x_node.parent.parent.right_child:
-                y_node = x_node.parent.parent.left_child
-                if y_node.color is Color.RED:
-                    y_node.color = Color.BLACK
-                    x_node.parent.color = Color.BLACK
-                    x_node.parent.parent.color = Color.RED
-                    x_node = x_node.parent.parent
+        while x.parent.color is Color.RED:
+            if x.parent is x.parent.parent.right_child:
+                y = x.parent.parent.left_child
+                if y.color is Color.RED:
+                    y.color = Color.BLACK
+                    x.parent.color = Color.BLACK
+                    x.parent.parent.color = Color.RED
+                    x = x.parent.parent
                 else:
-                    if x_node is x_node.parent.left_child:
-                        x_node = x_node.parent
-                        self.__right_rotation(x_node)
-                    x_node.parent.color = Color.BLACK
-                    x_node.parent.parent.color = Color.RED
-                    self.__left_rotation(x_node.parent.parent)
+                    if x is x.parent.left_child:
+                        x = x.parent
+                        self.__right_rotation(x)
+                    x.parent.color = Color.BLACK
+                    x.parent.parent.color = Color.RED
+                    self.__left_rotation(x.parent.parent)
             else:
-                y_node = x_node.parent.parent.right_child
-                if y_node.color is Color.RED:
-                    y_node.color = Color.BLACK
-                    x_node.parent.color = Color.BLACK
-                    x_node.parent.parent.color = Color.RED
-                    x_node = x_node.parent.parent
+                y = x.parent.parent.right_child
+                if y.color is Color.RED:
+                    y.color = Color.BLACK
+                    x.parent.color = Color.BLACK
+                    x.parent.parent.color = Color.RED
+                    x = x.parent.parent
                 else:
-                    if x_node is x_node.parent.right_child:
-                        x_node = x_node.parent
-                        self.__left_rotation(x_node)
-                    x_node.parent.color = Color.BLACK
-                    x_node.parent.parent.color = Color.RED
-                    self.__right_rotation(x_node.parent.parent)
-            if x_node is self.__root:
+                    if x is x.parent.right_child:
+                        x = x.parent
+                        self.__left_rotation(x)
+                    x.parent.color = Color.BLACK
+                    x.parent.parent.color = Color.RED
+                    self.__right_rotation(x.parent.parent)
+            if x is self.__root:
                 break
         self.__root.color = Color.BLACK
 
-    def __left_rotation(self, x_node: Node) -> None:
+    def __left_rotation(self, x: Node) -> None:
         """
         "Rotate the subtree rooted at `x` to the left."
 
@@ -445,25 +445,25 @@ class RedBlackTree(Generic[T]):
         that is used to document the function. It is a good idea to include a docstring
         for every function you write
 
-        :param x_node: Node
-        :type x_node: Node
+        :param x: Node
+        :type x: Node
         """
-        y_node = x_node.right_child
-        x_node.right_child = y_node.left_child
-        if y_node.left_child is not self.__nil:
-            y_node.left_child.parent = x_node
+        y = x.right_child
+        x.right_child = y.left_child
+        if y.left_child is not self.__nil:
+            y.left_child.parent = x
 
-        y_node.parent = x_node.parent
-        if x_node.parent is None:
-            self.__root = y_node
-        elif x_node is x_node.parent.left_child:
-            x_node.parent.left_child = y_node
+        y.parent = x.parent
+        if x.parent is None:
+            self.__root = y
+        elif x is x.parent.left_child:
+            x.parent.left_child = y
         else:
-            x_node.parent.right_child = y_node
-        y_node.left_child = x_node
-        x_node.parent = y_node
+            x.parent.right_child = y
+        y.left_child = x
+        x.parent = y
 
-    def __right_rotation(self, x_node: Node) -> None:
+    def __right_rotation(self, x: Node) -> None:
         """
         "Rotate the subtree rooted at `x` to the right."
 
@@ -472,20 +472,20 @@ class RedBlackTree(Generic[T]):
         Then it sets the left child of `x` to be the right child of `y`. Finally, it sets
         the right child of `y` to be `x`
 
-        :param x_node: Node
-        :type x_node: Node
+        :param x: Node
+        :type x: Node
         """
-        y_node = x_node.left_child
-        x_node.left_child = y_node.right_child
-        if y_node.right_child is not self.__nil:
-            y_node.right_child.parent = x_node
+        y = x.left_child
+        x.left_child = y.right_child
+        if y.right_child is not self.__nil:
+            y.right_child.parent = x
 
-        y_node.parent = x_node.parent
-        if x_node.parent is None:
-            self.__root = y_node
-        elif x_node is x_node.parent.right_child:
-            x_node.parent.right_child = y_node
+        y.parent = x.parent
+        if x.parent is None:
+            self.__root = y
+        elif x is x.parent.right_child:
+            x.parent.right_child = y
         else:
-            x_node.parent.left_child = y_node
-        y_node.right_child = x_node
-        x_node.parent = y_node
+            x.parent.left_child = y
+        y.right_child = x
+        x.parent = y
