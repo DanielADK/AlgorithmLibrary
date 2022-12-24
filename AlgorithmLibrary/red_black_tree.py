@@ -238,6 +238,12 @@ class RedBlackTree(Generic[T]):
         return node
 
     def to_list(self) -> list[T]:
+        """
+        Method converts tree to list in O(n) - ordered
+
+        Returns:
+            list: content of tree as list
+        """
         content = list()
         content = self.__in_order(self.__root, content)
         return content
