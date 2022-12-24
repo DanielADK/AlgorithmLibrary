@@ -42,5 +42,14 @@ class TestRedBlackTree(TestCase):
                     break
             self.assertFalse(rbt.contains(result))
 
-
-
+    def test_deny_multitype(self):
+        rbt = RedBlackTree[str]()
+        with self.assertRaises(TypeError):
+            rbt.insert(1)
+            rbt.insert(list("1"))
+            rbt.insert(tuple("1"))
+            rbt.insert(tuple(1))
+            rbt.insert(dict({"a": 1}))
+            rbt.insert(True)
+        rbt.insert("apple")
+        self.assertTrue(rbt.contains("apple"))
