@@ -111,13 +111,14 @@ class RedBlackTree(Generic[T]):
         Inserts value of datatype T into the tree
     remove(value: T)
         Removes value of datatype T from the tree
-    search(value: T)
+    contains(value: T)
         Search for value of datatype T in the tree
     minimum()
         Returns minimum value in the tree
     maximum()
         Return maximum value in the tree
     """
+
 
     def __init__(self) -> None:
         """
