@@ -17,9 +17,9 @@ T = TypeVar('T')
 
 def typeCheck(gen_class, value):
     if gen_class.__name__ != type(value).__name__:
-        raise TypeError("Invalid datatype. Expected: " +
-                        gen_class.__name__ +
-                        ", but got: " +
+        raise TypeError("Invalid datatype. Expected: "+
+                        gen_class.__name__+
+                        ", but got: "+
                         type(value).__name__)
 
 
@@ -118,7 +118,6 @@ class RedBlackTree(Generic[T]):
     maximum()
         Return maximum value in the tree
     """
-
 
     def __init__(self) -> None:
         """
