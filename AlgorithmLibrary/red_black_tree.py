@@ -123,13 +123,14 @@ class RedBlackTree(Generic[T]):
         """
         It initializes the tree.
         """
+        self.size: int = 0
         self.__nil = Node(0)
         self.__nil.color = Color.BLACK
         self.__nil.left_child = None
         self.__nil.right_child = None
         self.__root: Node[T] = self.__nil
 
-    def insert(self, value: T) -> None:
+    def insert(self, value: T) -> bool:
         """
         We start at the root and traverse down the tree until we find the correct place to insert
         the new node.
@@ -150,10 +151,15 @@ class RedBlackTree(Generic[T]):
 
         :param value: The value to be inserted into the tree
         :type value: T
-        :return: The node that is being returned is the node that is being inserted.
+        :return: value is not in the tree return true, otherwise false
         """
 
         typeCheck(self.__orig_class__.__args__[0], value)
+
+        if self.contains(value):
+            return False
+
+        self.size += 1
 
         node = Node(value)
         node.parent = None
@@ -181,12 +187,13 @@ class RedBlackTree(Generic[T]):
 
         if node.parent is None:
             node.color = Color.BLACK
-            return
+            return True
 
         if node.parent.parent is None:
-            return
+            return True
 
         self.__insert_balance(node)
+        return True
 
     def remove(self, value: T) -> None:
         """
@@ -284,6 +291,7 @@ class RedBlackTree(Generic[T]):
         :return: The node with the minimum key in the tree.
         """
         z = self.__nil
+        # find the element
         while node is not self.__nil:
             if node.key is key:
                 z = node
@@ -296,6 +304,8 @@ class RedBlackTree(Generic[T]):
         if z is self.__nil:
             # Value is not in the tree
             return
+
+        self.size -= 1
 
         y = z
         y_color = y.color

@@ -77,5 +77,24 @@ class TestRedBlackTree(TestCase):
 
         self.assertEqual(rbts.to_list(), sorted(test_str_list))
 
+    def test_size(self):
+        test_list: list[int] = []
+        rbt = RedBlackTree[int]()
+        self.assertTrue(rbt.size == 0)
 
+        count: int = 1_000
+        test_list = random.sample(range(-count, count), count)
 
+        count = 0
+        for i in test_list:
+            rbt.insert(i)
+            count += 1
+
+            self.assertTrue(rbt.size == count)
+
+        for i in test_list:
+            if random.randint(0, 3) == 1:
+                rbt.remove(i)
+                self.assertFalse(rbt.size == count)
+                count -= 1
+                self.assertTrue(rbt.size == count)
