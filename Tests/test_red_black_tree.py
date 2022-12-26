@@ -6,11 +6,10 @@ from AlgorithmLibrary.red_black_tree import RedBlackTree
 
 class TestRedBlackTree(TestCase):
     def test_int_insert(self):
-        test_list: list[int] = []
         rbt = RedBlackTree[int]()
 
         count: int = 20_000
-        test_list = random.sample(range(-count, count), count)
+        test_list: list[int] = random.sample(range(-count, count), count)
 
         for num in test_list:
             rbt.insert(num)
@@ -78,12 +77,11 @@ class TestRedBlackTree(TestCase):
         self.assertEqual(rbts.to_list(), sorted(test_str_list))
 
     def test_size(self):
-        test_list: list[int] = []
         rbt = RedBlackTree[int]()
         self.assertTrue(rbt.size == 0)
 
         count: int = 1_000
-        test_list = random.sample(range(-count, count), count)
+        test_list: list[int] = random.sample(range(-count, count), count)
 
         count = 0
         for i in test_list:
