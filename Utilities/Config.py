@@ -16,6 +16,3 @@ class Config:
 
     def __parseValue(self, value: str):
         return int(value) if value.isnumeric() else str(value)
-
-
-config = Config("test.cfg")
