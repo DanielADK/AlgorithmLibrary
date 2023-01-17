@@ -21,16 +21,29 @@ class Drawing:
     def drawGrid(self, step: int) -> None:
         x_size, y_size = self.__im_draw.im.size
         for x_pos in range(0, x_size, step):
-            self.__im_draw.line([(x_pos, 0), (x_pos, y_size)], fill=(169, 169, 169), width=1)
+            self.__im_draw.line([(x_pos, 0), (x_pos, y_size)],
+                                fill=(169, 169, 169),
+                                width=1)
         for y_pos in range(0, y_size, step):
-            self.__im_draw.line([(0, y_pos), (x_size, y_pos)], fill=(169, 169, 169), width=1)
+            self.__im_draw.line([(0, y_pos), (x_size, y_pos)],
+                                fill=(169, 169, 169),
+                                width=1)
 
     def drawNodeAt(self, node: Node, x: int, y: int) -> None:
         node_radius = self.__cfg.get("node_radius")
         node_line_width = self.__cfg.get("node_line_width")
-        x_min, y_min = x-node_radius / 2, y-node_radius / 2
-        # fontsize = 2/3 * node_radius
-        font: ImageFont = ImageFont.truetype("Roboto-Medium.ttf", int(2 / 3 * node_radius))
+        x_min, y_min = x-(node_radius / 2), y-(node_radius / 2)
+        text_height: int = node_radius
+        font: ImageFont = ImageFont.truetype("Roboto-Medium.ttf", text_height)
+        text_width: float = self.__im_draw.textlength(str(node.key), font)
+        text_ratio: float = (node_radius*(2/3))/text_width
+
+        print("vyska      = ", text_height)
+        print("poměr      = ", text_ratio)
+        print("nova vyska = ", int(text_height*text_ratio*(1/2)))
+        print()
+
+        font = ImageFont.truetype("Roboto-Medium.ttf", int(text_height*text_ratio))
 
         self.__im_draw.ellipse((x_min, y_min, x_min+node_radius, y_min+node_radius),
                                outline=(0, 0, 0),
@@ -50,11 +63,11 @@ class Drawing:
                             fill=(0, 0, 0),
                             width=self.__cfg.get("line_width"))
 
-    def draw(self, tree: BinarySearchTree) -> None:
+    def drawTree(self, tree: BinarySearchTree) -> None:
         self.drawGrid(40)
         self.drawNodeAt(Node(1), 40, 40)
 
-        a = ChartNode(2, 180, 180)
+        a = ChartNode("AAA", 180, 180)
         b = ChartNode(3, 140, 140)
         self.connectNode(a, b)
         self.drawNode(a)
@@ -76,4 +89,4 @@ bst.insert(1)
 bst.insert(4)
 bst.insert(2)
 
-drawing.draw(bst)
+drawing.drawTree(bst)
