@@ -38,11 +38,6 @@ class Drawing:
         text_width: float = self.__im_draw.textlength(str(node.key), font)
         text_ratio: float = (node_radius*(2/3))/text_width
 
-        print("vyska      = ", text_height)
-        print("poměr      = ", text_ratio)
-        print("nova vyska = ", int(text_height*text_ratio*(1/2)))
-        print()
-
         font = ImageFont.truetype("Roboto-Medium.ttf", int(text_height*text_ratio))
 
         self.__im_draw.ellipse((x_min, y_min, x_min+node_radius, y_min+node_radius),
