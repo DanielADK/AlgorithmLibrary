@@ -12,7 +12,9 @@ class Config:
         for line in open(path, "r").read().split("\n"):
             split = line.split(" = ")
             self.__options[split[0]] = self.__parseValue(split[1])
-        print(self.__options)
+
 
     def __parseValue(self, value: str):
         return int(value) if value.isnumeric() else str(value)
+    def get(self, value: str) -> any:
+        return self.__options.get(value)
