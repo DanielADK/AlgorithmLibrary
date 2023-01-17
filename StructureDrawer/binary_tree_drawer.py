@@ -1,6 +1,6 @@
 import AlgorithmLibrary.binary_search_tree
 from AlgorithmLibrary.binary_search_tree import BinarySearchTree, Node, T
-import sys
+import math
 from Utilities.Config import Config
 from PIL import Image, ImageDraw, ImageFont
 
@@ -34,6 +34,7 @@ class Drawing:
 
         self.__im_draw.ellipse((x_min, y_min, x_min+node_radius, y_min+node_radius),
                                outline=(0, 0, 0),
+                               fill=(255, 255, 255),
                                width=node_line_width)
         self.__im_draw.text((x, y), str(node.key),
                             align="center",
@@ -44,10 +45,20 @@ class Drawing:
     def drawNode(self, node: ChartNode) -> None:
         self.drawNodeAt(node, node.x, node.y)
 
+    def connectNode(self, a: ChartNode, b: ChartNode):
+        self.__im_draw.line([(a.x, a.y), (b.x, b.y)],
+                            fill=(0, 0, 0),
+                            width=self.__cfg.get("line_width"))
+
     def draw(self, tree: BinarySearchTree) -> None:
         self.drawGrid(40)
         self.drawNodeAt(Node(1), 40, 40)
-        self.drawNode(ChartNode(2, 120, 80))
+
+        a = ChartNode(2, 180, 180)
+        b = ChartNode(3, 140, 140)
+        self.connectNode(a, b)
+        self.drawNode(a)
+        self.drawNode(b)
 
         # write to stdout
         self.__image.show()
