@@ -4,7 +4,7 @@ from Structures.Node import Node
 
 
 class TestSVGWriter(TestCase):
-    def test_save(self):
+    def test_addNodeAndEdge(self):
         writer = SVGWriter(200, 200, "svgWriterConfig.cfg")
         a = Node[int](1)
         b = Node[str]("ABC")
