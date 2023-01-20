@@ -14,10 +14,9 @@ def nodeToSVG(node: (Node, (int, int))) -> str:
 
 
 class SVGWriter:
-    def __init__(self, x_size: int, y_size: int, file_path: str, config: str):
+    def __init__(self, x_size: int, y_size: int, config: str):
         self.__cfg_file: str = config
         self.__cfg: Config = Config(config)
-        self.__file: str = file_path
         self.__x_size: int = x_size
         self.__y_size: int = y_size
         self.__nodes: list[(Node, (int, int))] = list()
@@ -30,7 +29,7 @@ class SVGWriter:
         self.__edges.append(Edge(a,b))
 
     def edgeToSVG(self, edge: Edge) -> str:
-        # find coods of nodes
+        # find coodrs of nodes
         first: (int, int) = ()
         second: (int, int) = ()
         for node in self.__nodes:
@@ -45,8 +44,8 @@ class SVGWriter:
         return '<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="black"/>' \
             .format(x1=first[0], y1=first[1], x2=second[0], y2=second[1])
 
-    def save(self):
-        with open(self.__file, "w", encoding="utf-8") as file:
+    def save(self, file_name: str):
+        with open(file_name, "w", encoding="utf-8") as file:
             # Write header SVG tag
             file.write('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" '
                        'width="{x}" height="{y}">\n'.format(x=self.__x_size, y=self.__y_size))
