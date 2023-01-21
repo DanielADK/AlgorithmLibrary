@@ -1,6 +1,7 @@
 from Structures.Node import Node
 from Structures.Edge import Edge
 from Utilities.Config import Config
+import json
 
 
 def nodeToSVG(node: (Node, (int, int))) -> str:
@@ -10,7 +11,7 @@ def nodeToSVG(node: (Node, (int, int))) -> str:
            '{key}' \
            '</text>' \
            '</g>' \
-        .format(key=str(node[0].key), x=node[1], y=node[2])
+        .format(key=str(node[0].key), x=node[1][0], y=node[1][1])
 
 
 class SVGWriter:
@@ -23,24 +24,15 @@ class SVGWriter:
         self.__edges: list[Edge] = list()
 
     def addNode(self, node: Node, x: int, y: int) -> None:
-        self.__nodes.append((node, x, y))
+        self.__nodes.append((node, (x, y)))
 
     def addEdge(self, a: Node, b: Node) -> None:
-        self.__edges.append(Edge(a,b))
+        self.__edges.append(Edge(a, b))
 
     def edgeToSVG(self, edge: Edge) -> str:
-        # find coodrs of nodes
-        first: (int, int) = ()
-        second: (int, int) = ()
-        for node in self.__nodes:
-            if edge.first == node[0] or edge.second == node[0]:
-                if first == ():
-                    first = (node[1], node[2])
-                elif second == ():
-                    second = (node[1], node[2])
-            if first != () and second != ():
-                break
-
+        # find coords of nodes
+        first: (int, int) = [x for x in self.__nodes if x[0] == edge.first][0][1]
+        second: (int, int) = [x for x in self.__nodes if x[0] == edge.second][0][1]
         return '<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="black"/>' \
             .format(x1=first[0], y1=first[1], x2=second[0], y2=second[1])
 
@@ -65,3 +57,14 @@ class SVGWriter:
 
             # Write footer SVG tag
             file.write("</svg>")
+
+    def loadFromJSON(self, file_name: str):
+        with open(file_name, "r", encoding="utf-8") as f:
+            load = json.loads(f.read())
+        for node in load["nodes"]:
+            self.__nodes.append((Node(node["key"]), (node["x"], node["y"])))
+        for edge in load["edges"]:
+            self.__edges.append(Edge(
+                [x for x in self.__nodes if edge["first"] == x[0].key][0][0],
+                [x for x in self.__nodes if edge["second"] == x[0].key][0][0]
+            ))
